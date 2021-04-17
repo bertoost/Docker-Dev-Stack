@@ -1,5 +1,6 @@
 .idea/
 
+/services/fallback/.env
 /projects/*
 !projects/phpinfo/index.php
 
