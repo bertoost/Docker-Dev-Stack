@@ -6,7 +6,7 @@ For this projects there is a fallback launched when you up the Dev Stack.
 
 ## How it works
 
-By default there is a project directory when you checkout this repository. It contains a phpinfo "project". You can change this default projects folder path with overwrite the `PROJECTS_DIR` environment variable inside the `.env` file (check the `default.env`).
+By default there is a project directory when you checkout this repository. It contains a phpinfo "project".
 
 Traefik is configured to load this fallback as last (regarding custom project domains via Traefik). Meaning, if any dockerized project is having their own config/setup, it's loaded and used first above the fallback projects.
 
@@ -39,3 +39,35 @@ Inside a project directory, NginX is looking for several options. Below in order
 It is looking for an `index.php`, `index.html` and last `index.htm`
 
 _By default there is no friendly-url support in this fallback system._
+
+## Start the fallback
+
+From inside the root of your dev-stack checkout you should run the next command
+
+```bash
+docker-compose -f services/fallback/docker-compose.yml up -d
+```
+
+## Projects directory
+
+Default the dev-stack works with the root projects/ directory.
+
+By default a phpinfo is included.
+
+Once upped, try to open this URLs and see what happens.
+
+```bash
+http://phpinfo.php73.{domain}
+
+http://phpinfo.php74.{domain}
+
+http://phpinfo.php80.{domain}
+```
+
+### Changing directory
+
+Therefore you have to create a .env file inside `services/fallback/` with this variable
+
+```dotenv
+PROJECTS_DIR=relative/path/actual/directory
+```
