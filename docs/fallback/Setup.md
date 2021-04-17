@@ -38,7 +38,7 @@ Inside a project directory, NginX is looking for several options. Below in order
 
 It is looking for an `index.php`, `index.html` and last `index.htm`
 
-_By default there is no friendly-url support in this fallback system._
+> By default there is no friendly-url support in this fallback system.
 
 ## Start the fallback
 
