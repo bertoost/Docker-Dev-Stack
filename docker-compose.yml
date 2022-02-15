@@ -2,7 +2,7 @@
 version: "3.9"
 services:
   traefik:
-    image: traefik:v2.4
+    image: traefik:v2.6
     container_name: traefik
     restart: always
     command: >
@@ -27,7 +27,7 @@ services:
       - webgateway
 
   mysql:
-    image: ${DOCKER_USERNAME:-bertoost}/mysql:${MYSQL_VERSION:-5.7}
+    image: ${DOCKER_USERNAME:-bertoost}/mysql:${MYSQL_VERSION:-8.0}
     container_name: mysql
     restart: always
     ports:
