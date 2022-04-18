@@ -18,10 +18,21 @@ Before you use this dev stack, please read the following topics.
   - [Auto-added binary files](docs/Traefik.md#auto-added-binary-files)
 - [MySQL & Upgrading version](docs/MySQL.md)
 - [Mailhog & Portainer](docs/Others.md)
-- [Dev Stack Fallback setup](docs/fallback/Setup.md)
 
 For advanced users
 
 - [Custom NginX Config](docs/CustomNginx.md)
   - [Configuration folder](docs/CustomNginx.md#configuration-folder)
   - [Environment variables](docs/CustomNginx.md#using-environment-variables)
+
+### Fallback PHP version support
+
+Before this was included by default. Read more about the fallback PHP version support
+
+[Dev Stack Fallback setup](docs/fallback/Setup.md)
+
+### Custom services
+
+There are a couple of services, separated from the main features in this dev-stack
+
+[More about custom services](docs/CustomServices.md)
