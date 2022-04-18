@@ -2,29 +2,32 @@
 version: "3.9"
 services:
   nginx:
-    image: ${DOCKER_USERNAME:-bertoost}/nginx:1.19-dev
+    image: ${DOCKER_USERNAME:-bertoost}/nginx:1.21-dev
     restart: always
     depends_on:
       - php73
       - php74
       - php80
+      - php81
     links:
       - php73:php73
       - php74:php74
       - php80:php80
+      - php81:php81
     environment:
       DEV_HOST_DOMAIN: ${DEV_HOST_DOMAIN:-local}
     volumes:
       - sock74:/sock74
       - sock80:/sock80
+      - sock81:/sock81
       - ../../logs/nginx:/var/log/nginx
       - ../../data/nginx:/etc/nginx/conf.d/custom
       - ${PROJECTS_DIR:-../../projects}:/var/www/html
     labels:
-      traefik.enable: 'true'
-      traefik.docker.network: 'webgateway'
-      traefik.http.routers.devstackfallback.rule: "PathPrefix(`/`)"
-      traefik.http.routers.devstackfallback.priority: 1
+      - "traefik.enable=true"
+      - "traefik.docker.network=webgateway"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-defaultproject}.rule=HostRegexp(`{project:(.*)}.php{phpversion:(73|74|80|81)}.${DEV_HOST_DOMAIN:-local}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-devstackfallback}.priority=1"
     env_file:
       - ../../.env
     networks:
@@ -102,15 +105,34 @@ services:
     networks:
       - development
 
+  php81:
+    image: ${DOCKER_USERNAME:-bertoost}/php:8.1-fpm-dev
+    restart: always
+    volumes:
+      - sock81:/sock
+      - ../../logs/php81:/var/log/php
+      - ../../data/composer:/home/php/.composer
+      - ${PROJECTS_DIR:-../../projects}:/var/www/html
+    environment:
+      BINARY_DIRECTORY: ''
+      XDEBUG_MODE: develop,debug
+      PHP_IDE_CONFIG: "serverName=fallback-php81-project"
+      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
+      # PHP Environment variables
+      # PHP_DATE_TIMEZONE: Europe/Paris
+      # PHP_MAX_EXECUTION_TIME: 60
+      # PHP_MEMORY_LIMIT: 256M
+      # PHP_POST_MAX_SIZE: 128M
+      # PHP_UPLOAD_MAX_FILESIZE: 128M
+    env_file:
+      - ../../.env
+    networks:
+      - development
+
 volumes:
-#  projects:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: ${PROJECTS_DIR:-../../projects}
   sock74:
   sock80:
+  sock81:
 
 networks:
   webgateway:

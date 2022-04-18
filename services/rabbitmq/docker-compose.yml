@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    hostname: rabbitmq
+    ports:
+      - "15672:15672"
+      - "15671:15671"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-admin}
+    volumes:
+      - ../../data/rabbitmq:/var/lib/rabbitmq
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: 'webgateway'
+      traefik.http.routers.rabbitmq.rule: "Host(`rabbitmq.${DEV_HOST_DOMAIN:-local}`)"
+      traefik.http.services.rabbitmq.loadbalancer.server.port: 15672
+    networks:
+      - development
+      - webgateway
+
+networks:
+  webgateway:
+    name: webgateway
+  development:
+    name: development
