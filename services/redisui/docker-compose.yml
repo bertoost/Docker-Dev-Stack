@@ -13,8 +13,6 @@ services:
 
 networks:
   webgateway:
-    external:
-      name: webgateway
+    name: webgateway
   development:
-    external:
-      name: development
+    name: development
