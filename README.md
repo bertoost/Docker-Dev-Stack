@@ -17,7 +17,6 @@ Before you use this dev stack, please read the following topics.
   - [Per project basis](docs/Traefik.md#using-traefik-on-per-project-basis)
   - [Auto-added binary files](docs/Traefik.md#auto-added-binary-files)
 - [MySQL & Upgrading version](docs/MySQL.md)
-- [Mailhog & Portainer](docs/Others.md)
 
 For advanced users
 

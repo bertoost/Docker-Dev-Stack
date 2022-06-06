@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  postoffice:
+    image: mailhog/mailhog
+    container_name: postoffice
+    restart: always
+    command: [ "-storage=maildir", "-maildir-path=/maildir" ]
+    volumes:
+      - ../../data/mail:/maildir
+    ports:
+      - '25:1025'
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: 'webgateway'
+      traefik.http.routers.postoffice.rule: "Host(`postoffice.${DEV_HOST_DOMAIN:-local}`)"
+      traefik.http.services.postoffice.loadbalancer.server.port: 8025
+    networks:
+      development:
+        aliases:
+          - mail.docker.local
+      webgateway: null
+
+networks:
+  webgateway:
+    external: true
+    name: webgateway
+  development:
+    external: true
+    name: development
