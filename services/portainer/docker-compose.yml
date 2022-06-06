@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../../data/portainer:/data'
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: 'webgateway'
+      traefik.http.routers.portainer.rule: "Host(`portainer.${DEV_HOST_DOMAIN:-local}`)"
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+    networks:
+      - development
+      - webgateway
+
+networks:
+  webgateway:
+    external: true
+    name: webgateway
+  development:
+    external: true
+    name: development
